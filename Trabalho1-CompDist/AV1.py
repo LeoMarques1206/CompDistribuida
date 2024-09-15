@@ -4,11 +4,11 @@ from scipy.special import comb
 
 def disponibilidade(n, k, p):
     #n = número total de servidores replicados ou instâncias do serviço
-    #k = número mínimo de servidores que precisam estar disponíveis ao mesmo tempo para que o serviço funcione corretamente (k=1 (pelo menos um servidor funciona)) (k=n (todos os servidores funcionam))
+    #k = número mínimo de servidores que precisam estar disponíveis 
     #p = Probabilidade de Disponibilidade de um Servidor 
     A = 0
     for i in range(k, n+1):
-        A += comb(n, i) * (p**i) * ((1 - p)**(n - i)) # FORMULA (explicação abaixo)
+        A += comb(n, i) * (p**i) * ((1 - p)**(n - i))
     return A
 
 # comb(n, i) -> coeficiente binomial (quantas maneiras pode-se escolher i servidores disponiveis entre n servidores);
@@ -19,16 +19,16 @@ plt.figure(figsize=(8, 5))
 
 N = [3, 5]
 K = [1, 3]
-
-P = [0.2, 0.5, 0.8]
+P = np.linspace(0.1, 0.9, 100) 
 
 for n in N:
     for k in K:
         disponibilidade_values = [disponibilidade(n, k, p) for p in P]
-        plt.bar([f'p={p}' for p in P], disponibilidade_values, label=f'n={n}, k={k}', alpha=0.7)
+        plt.plot(P, disponibilidade_values, label=f'n={n}, k={k}')
 
 plt.title('Disponibilidade do Serviço para Diferentes Valores de n e k')
 plt.xlabel('Probabilidade de Disponibilidade de um Servidor (p)')
 plt.ylabel('Disponibilidade do Serviço')
 plt.legend()
+plt.grid(True)  
 plt.show()
